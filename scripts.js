@@ -2,30 +2,6 @@ $( document ).ready(function() {
   /**
    * retrieve informations of the api
    */
-  function getInfo() {
-    
-    
-    const urlLatest = "https://smileschool-api.hbtn.info/latest-videos";
-    
-    
-    $.get({
-      url: urlLatest,
-      success: function(data) {
-        $("#loader3").show();
-        for (let i = 0; i < data.length; i++) {
-          displayLatestvideos(i, data[i].title, data[i]["sub-title"], data[i].thumb_url, data[i].author,
-                                data[i].author_pic_url, data[i].star, data[i].duration);
-        }
-      },
-      error: function() {
-        alert("Error");
-      },
-      complete: function() {
-        $("#loader3").hide();
-      }
-    });
-
-  }
 
   /**
    * create Carousel item and append to DOM
@@ -88,7 +64,6 @@ $( document ).ready(function() {
             value.author_pic_url, value.star, value.duration);
           });
       }
-
       },
       error: function() {
         alert("Error");
@@ -99,6 +74,27 @@ $( document ).ready(function() {
     });
   }
 
+  /** create carousel latest video */
+  function displayLatestvideos() {
+    $.get({
+      url: "https://smileschool-api.hbtn.info/latest-videos",
+      success: function(data) {
+        $("#loader3").show();
+        for (let i = 0; i < data.length; i++) {
+          createCard(i, "#carousel-latest-video .carousel-inner", data[i].thumb_url, data[i].title, data[i]["sub-title"], data[i].author,
+                                data[i].author_pic_url, data[i].star, data[i].duration);
+        }
+      },
+      error: function() {
+        alert("Error");
+      },
+      complete: function() {
+        $("#loader3").hide();
+      }
+    });
+  }
+
+  /** create 1 card */
   function createCard (position, selector, thumb_url, title, sub_title, author, author_pic_url, star, duration) {
     const divItem = $("<div>").attr({class: `carousel-item ${position === 0 ? "active" : ""} col-12 col-sm-6 col-md-4 col-lg-3 ml-0`});
     $(selector).append(divItem);
@@ -133,6 +129,7 @@ $( document ).ready(function() {
     $(divCard).append(cardBody);
   }
 
+  /** display stars in card */
   function displayStar (selector, star) {
     let starState = "";
     let starString = "";
@@ -148,6 +145,7 @@ $( document ).ready(function() {
    }
   }
 
+  /** slide carousel 1 card by one */
   function carousel(e, selector) {
     /*
         CC 2.0 License Iatek LLC 2018 - Attribution required
@@ -173,7 +171,11 @@ $( document ).ready(function() {
   $('#carousel-video').on('slide.bs.carousel', function (e) {
     carousel(e, '#carousel-video');
   });
+  $('#carousel-latest-video').on('slide.bs.carousel', function (e) {
+    carousel(e, '#carousel-latest-video');
+  });
   
   displayQuotes();
   displayPopularvideos();
+  displayLatestvideos();
 });
