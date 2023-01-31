@@ -174,8 +174,17 @@ $( document ).ready(function() {
   $('#carousel-latest-video').on('slide.bs.carousel', function (e) {
     carousel(e, '#carousel-latest-video');
   });
+  const quotes = document.getElementById("carousel-of-quotes");
+  if (quotes) {
+    displayQuotes();
+  }
+  const videos = document.getElementById("carousel-video");
+  if (videos) {
+    displayPopularvideos();
+  }
+  const latestvideos = document.getElementById("carousel-latest-video");
+  if (latestvideos) {
+    displayLatestvideos();
+  }
   
-  displayQuotes();
-  displayPopularvideos();
-  displayLatestvideos();
 });
